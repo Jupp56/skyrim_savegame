@@ -199,15 +199,15 @@ fn read_player_location(r: &mut SaveFileReader) -> PlayerLocation {
 
 #[derive(Clone)]
 pub struct TES {
-    u1: Vec<TESUnknown0>,
-    u2: Vec<RefIdType>,
-    u3: Vec<RefIdType>,
+    pub u1: Vec<TESUnknown0>,
+    pub u2: Vec<RefIdType>,
+    pub u3: Vec<RefIdType>,
 }
 
 #[derive(Clone, Debug)]
 pub struct TESUnknown0 {
-    form_id: RefIdType,
-    unknown: u16,
+    pub form_id: RefIdType,
+    pub unknown: u16,
 }
 
 impl Debug for TES {
