@@ -1,15 +1,15 @@
 use crate::reader::*;
-use crate::fundamental_types::RefId;
 use flate2::read::ZlibDecoder;
 use std::io::Read;
 use std::fmt;
 use std::convert::TryInto;
+use crate::RefIdType;
 
 const CHANGE_FORM_DECODE_ERROR: &str = "Failed to decode compressed change form!";
 
 #[derive(Clone)]
 pub struct ChangeForm {
-    pub form_id: RefId,
+    pub form_id: RefIdType,
     pub change_flags: u32,
     pub data_type: u8,
     pub version: u8,
@@ -33,7 +33,6 @@ impl fmt::Debug for ChangeForm {
 
 pub fn read_change_forms(sfr: &mut SaveFileReader, count: u32) -> Vec<ChangeForm> {
     let mut result: Vec<ChangeForm> = Vec::new();
-    let mut compressed_count = 0;
     println!("processing {} change forms.", count);
     for _i in 0..count {
         //println!("handling change_form {}", i);
@@ -60,8 +59,6 @@ pub fn read_change_forms(sfr: &mut SaveFileReader, count: u32) -> Vec<ChangeForm
                         });
                     }
                     false => {
-                        compressed_count += 1;
-
                         let compressed = sfr.read_bytes_to_vec(length1.into());
                         let mut decoder = ZlibDecoder::new(compressed.as_slice());
                         let mut data: Vec<u8> = Vec::new();
@@ -95,8 +92,6 @@ pub fn read_change_forms(sfr: &mut SaveFileReader, count: u32) -> Vec<ChangeForm
                         });
                     }
                     false => {
-                        compressed_count += 1;
-
                         let compressed = sfr.read_bytes_to_vec(length1.into());
                         let mut decoder = ZlibDecoder::new(compressed.as_slice());
                         let mut data: Vec<u8> = Vec::new();
@@ -130,7 +125,6 @@ pub fn read_change_forms(sfr: &mut SaveFileReader, count: u32) -> Vec<ChangeForm
                         });
                     }
                     false => {
-                        compressed_count += 1;
                         let ulength1: usize = length1.try_into().expect("length1 value on change form too large.");
                         let compressed = sfr.read_bytes_to_vec(ulength1);
                         let mut decoder = ZlibDecoder::new(compressed.as_slice());
@@ -151,9 +145,6 @@ pub fn read_change_forms(sfr: &mut SaveFileReader, count: u32) -> Vec<ChangeForm
             }
             _ => panic!("length value on change form invalid!")
         };
-    }
-    if compressed_count != 0 {
-        println!("Found {} compressed change forms. Those can currently not be parsed and get ignored.", compressed_count);
     }
     result
 }

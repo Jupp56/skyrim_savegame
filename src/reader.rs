@@ -132,7 +132,7 @@ pub fn read_u32s_into_vec(save_file_reader: &mut SaveFileReader, count: u32) -> 
     read_into_vec(save_file_reader, count, |r| r.read_u32())
 }
 
-pub fn read_ref_ids_into_vec(r: &mut SaveFileReader, count: u32) -> Vec<RefId> {
+pub fn read_ref_ids_into_vec(r: &mut SaveFileReader, count: u32) -> Vec<RefIdType> {
     read_into_vec(r, count, |r| read_ref_id(r))
 }
 
@@ -151,12 +151,12 @@ pub fn read_into_vec<S, T>(arg: &mut S, count: u32, func: fn(&mut S) -> T) -> Ve
     vec
 }
 
-pub fn read_ref_id(sfr: &mut SaveFileReader) -> RefId {
+pub fn read_ref_id(sfr: &mut SaveFileReader) -> RefIdType {
     RefId {
         byte0: sfr.read_u8(),
         byte1: sfr.read_u8(),
         byte2: sfr.read_u8(),
-    }
+    }.get_form_id()
 }
 
 /// Convenience function for when vsvals are used as array size indicators for usage in loops.
