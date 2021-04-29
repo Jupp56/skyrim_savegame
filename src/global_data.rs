@@ -65,7 +65,7 @@ fn read_global_data_type(data_type: u32, _data_length: u32, data: Vec<u8>) -> Re
 }
 
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum GlobalDataType {
     MiscStats(Vec<MiscStats>),
     PlayerLocation(PlayerLocation),
@@ -108,14 +108,14 @@ pub enum GlobalDataType {
     Main,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MiscStats {
     name: String,
     category: MiscStatCategory,
     value: u32,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum MiscStatCategory {
     General,
     Quest,
@@ -158,7 +158,7 @@ impl Parse for MiscStats {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct PlayerLocation {
     /// Number of next savegame specific object id, i.e. FFxxxxxx.
     next_object_id: u32,
@@ -197,13 +197,14 @@ fn read_player_location(r: &mut SaveFileReader) -> PlayerLocation {
     }
 }
 
+#[derive(Clone)]
 pub struct TES {
     u1: Vec<TESUnknown0>,
     u2: Vec<RefId>,
     u3: Vec<RefId>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct TESUnknown0 {
     form_id: RefId,
     unknown: u16,
@@ -242,7 +243,7 @@ fn read_tes(r: &mut SaveFileReader) -> TES {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct GlobalVariable {
     form_id: RefId,
     value: f32,
@@ -259,7 +260,7 @@ fn read_global_variables(r: &mut SaveFileReader) -> Vec<GlobalVariable> {
     vec
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct CreatedObjects {
     /// List of all created enchantments that are/were applied to weapons.
     weapon_ench_table: Vec<Enchantment>,
@@ -290,7 +291,7 @@ fn read_created_objects(r: &mut SaveFileReader) -> CreatedObjects {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Enchantment {
     /// FormID of the enchantment. I've only seen created types, no default or array types.
     ref_id: RefId,
@@ -317,7 +318,7 @@ fn read_enchantments(r: &mut SaveFileReader, count: u32) -> Vec<Enchantment> {
     enchantments
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MagicEffect {
     effect_id: RefId,
     info: EnchInfo,
@@ -341,14 +342,14 @@ fn read_magic_effects(r: &mut SaveFileReader, count: u32) -> Vec<MagicEffect> {
             })
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct EnchInfo {
     magnitude: f32,
     duration: u32,
     area: u32,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Effects {
     image_space_modifiers: Vec<Effect>,
     unknown1: f32,
@@ -375,7 +376,7 @@ fn read_effects(r: &mut SaveFileReader) -> Effects {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Effect {
     /// Value from 0 to 1 (0 is no effect, 1 is full effect)
     strength: f32,
@@ -386,7 +387,7 @@ pub struct Effect {
     effect_id: RefId,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Weather {
     climate: RefId,
     weather: RefId,
@@ -467,7 +468,7 @@ fn read_weather(r: &mut SaveFileReader) -> Weather {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Audio {
     /// Only the UIActivateFail sound descriptor has been observed here.
     unknown: RefId,
@@ -489,7 +490,7 @@ pub fn read_audio(r: &mut SaveFileReader) -> Audio {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct SkyCellUnknown0 {
     u1: RefId,
     u2: RefId,
@@ -503,7 +504,7 @@ fn read_sky_cells(r: &mut SaveFileReader) -> Vec<SkyCellUnknown0> {
     })
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ProcessLists {
     u1: f32,
     u2: f32,
@@ -532,7 +533,7 @@ fn read_process_lists(r: &mut SaveFileReader) -> ProcessLists {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Crime {
     witness_num: u32,
     crime_type: CrimeType,
@@ -609,7 +610,7 @@ fn read_crime(r: &mut SaveFileReader) -> Crime {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum CrimeType {
     Theft,
     Pickpocketing,
@@ -637,7 +638,7 @@ fn convert_to_crime_type(num: u32) -> CrimeType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Interface {
     /// - 0xEC - HelpLockpickingShort
     /// - 0xEE - HelpSmithingShort
@@ -692,7 +693,7 @@ fn read_interface(r: &mut SaveFileReader) -> Interface {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct InterfaceUnknown0 {
     unknown_0_0: Vec<InterfaceUnknown0_0>,
     unknown1: Vec<String>,
@@ -700,7 +701,7 @@ pub struct InterfaceUnknown0 {
 }
 
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct InterfaceUnknown0_0 {
     u0: String,
     u1: String,
@@ -710,7 +711,7 @@ pub struct InterfaceUnknown0_0 {
     u5: u32,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ActorCauses {
     next_num: u32,
     unknown: Vec<ActorCausesUnknown0>,
@@ -736,7 +737,7 @@ impl Parse for ActorCauses {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct ActorCausesUnknown0 {
     x: f32,
     y: f32,
@@ -745,7 +746,7 @@ pub struct ActorCausesUnknown0 {
     actor_id: RefId,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct DetectionManagerUnknown0 {
     u0: RefId,
     u1: u32,
@@ -767,7 +768,7 @@ impl Parse for DetectionManagerUnknown0 {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct LocationMetaDataUnknown0 {
     u0: RefId,
     u1: u32,
@@ -787,7 +788,7 @@ impl Parse for LocationMetaDataUnknown0 {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct QuestStaticData {
     u0: Vec<QuestRunDataItem3>,
     u1: Vec<QuestRunDataItem3>,
@@ -826,7 +827,7 @@ impl Parse for QuestStaticData {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct QuestRunDataItem3 {
     u1: u32,
     u2: f32,
@@ -846,7 +847,7 @@ fn read_quest_run_data_item_3(r: &mut SaveFileReader) -> QuestRunDataItem3 {
 }
 
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub enum QuestRunDataItem3DataType {
     RefId(RefId),
     U32(u32),
@@ -864,7 +865,7 @@ fn read_quest_run_data_item_3_data_type(r: &mut SaveFileReader) -> QuestRunDataI
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct QuestStaticDataUnknown0 {
     unk0_0: RefId,
     u1: Vec<QuestStaticDataUnknown1>,
@@ -883,13 +884,13 @@ fn read_quest_static_data_unknown_0(r: &mut SaveFileReader) -> QuestStaticDataUn
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct QuestStaticDataUnknown1 {
     unk_1_0: u32,
     unk_1_1: u32,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct MagicFavorites {
     /// Spells, shouts, abilities etc.
     favorited_magics: Vec<RefId>,
@@ -910,7 +911,7 @@ impl Parse for MagicFavorites {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct StoryEventManager {
     u0: u32,
     /// Unknown format. Possibly the same as unk0 and unk1 in Quest Static Data
@@ -933,7 +934,7 @@ impl Parse for StoryEventManager {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct IngredientsCombined {
     ingredient0: RefId,
     ingredient1: RefId,
@@ -953,7 +954,7 @@ impl Parse for IngredientsCombined {
     }
 }
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct AnimObject {
     /// RefID pointing to an actor reference.
     achr: RefId,

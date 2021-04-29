@@ -1,5 +1,5 @@
 use std::env;
-use skyrim_special_savegame_parser::parse_save_file;
+use skyrim_savegame::parse_save_file;
 use std::fs::File;
 use std::io::Read;
 

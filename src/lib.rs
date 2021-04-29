@@ -20,7 +20,7 @@ use reader::*;
 pub mod header;
 use header::*;
 
-
+#[derive(Clone)]
 pub struct ScreenshotData {
     pub height: u32,
     pub width: u32,
@@ -37,6 +37,7 @@ impl std::fmt::Debug for ScreenshotData {
     }
 }
 
+#[derive(Clone)]
 pub struct SaveFile {
     pub magic: String,
     pub header: Header,

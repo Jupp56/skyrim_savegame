@@ -1,7 +1,7 @@
 use crate::fundamental_types::FileTime;
 use crate::reader::{SaveFileReader, read_filetime};
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Header {
     pub version: u32,
     pub save_number: u32,

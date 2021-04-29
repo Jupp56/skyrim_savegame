@@ -7,7 +7,7 @@ use std::convert::TryInto;
 
 const CHANGE_FORM_DECODE_ERROR: &str = "Failed to decode compressed change form!";
 
-
+#[derive(Clone)]
 pub struct ChangeForm {
     pub form_id: RefId,
     pub change_flags: u32,
