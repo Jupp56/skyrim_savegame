@@ -110,9 +110,9 @@ pub enum GlobalDataType {
 
 #[derive(Clone, Debug)]
 pub struct MiscStats {
-    name: String,
-    category: MiscStatCategory,
-    value: u32,
+    pub name: String,
+    pub category: MiscStatCategory,
+    pub value: u32,
 }
 
 #[derive(Clone, Debug)]
@@ -161,25 +161,25 @@ impl Parse for MiscStats {
 #[derive(Clone, Debug)]
 pub struct PlayerLocation {
     /// Number of next savegame specific object id, i.e. FFxxxxxx.
-    next_object_id: u32,
+    pub next_object_id: u32,
     /// This form is usually 0x0 or a worldspace. coorX and coorY represent a cell in this worldspace.
-    world_space_1: RefIdType,
+    pub world_space_1: RefIdType,
     /// x-coordinate (cell coordinates) in worldSpace1.
-    coor_x: i32,
+    pub coor_x: i32,
     /// y-coordinate (cell coordinates) in worldSpace1
-    coor_y: i32,
+    pub coor_y: i32,
     /// This can be either a worldspace or an interior cell.
     /// If it's a worldspace, the player is located at the cell (coorX, coorY).
     /// posX/Y/Z is the player's position inside the cell
-    world_space_2: RefIdType,
+    pub world_space_2: RefIdType,
     /// x-coordinate in worldSpace2
-    pos_x: f32,
+    pub pos_x: f32,
     /// y-coordinate in worldSpace2
-    pos_y: f32,
+    pub pos_y: f32,
     /// z-coordinate in worldSpace2
-    pos_z: f32,
+    pub pos_z: f32,
     /// vsval? It seems absent in 9th version. Not read by this library.
-    unk: Vec<u8>,
+    pub unk: Vec<u8>,
 }
 
 fn read_player_location(r: &mut SaveFileReader) -> PlayerLocation {
@@ -245,8 +245,8 @@ fn read_tes(r: &mut SaveFileReader) -> TES {
 
 #[derive(Clone, Debug)]
 pub struct GlobalVariable {
-    form_id: RefIdType,
-    value: f32,
+    pub form_id: RefIdType,
+    pub value: f32,
 }
 
 fn read_global_variables(r: &mut SaveFileReader) -> Vec<GlobalVariable> {
@@ -263,14 +263,14 @@ fn read_global_variables(r: &mut SaveFileReader) -> Vec<GlobalVariable> {
 #[derive(Clone, Debug)]
 pub struct CreatedObjects {
     /// List of all created enchantments that are/were applied to weapons.
-    weapon_ench_table: Vec<Enchantment>,
+    pub weapon_ench_table: Vec<Enchantment>,
     /// List of all created enchantments that are/were applied to armour.
     /// Not sure which types of armour (Body/Gloves/Boots/Shield/etc) this encompasses.
-    armour_ench_table: Vec<Enchantment>,
+    pub armour_ench_table: Vec<Enchantment>,
     /// List of all created potions.
-    potion_table: Vec<Enchantment>,
+    pub potion_table: Vec<Enchantment>,
     /// List of all created poisons.
-    poison_table: Vec<Enchantment>,
+    pub poison_table: Vec<Enchantment>,
 }
 
 fn read_created_objects(r: &mut SaveFileReader) -> CreatedObjects {
@@ -294,12 +294,12 @@ fn read_created_objects(r: &mut SaveFileReader) -> CreatedObjects {
 #[derive(Clone, Debug)]
 pub struct Enchantment {
     /// FormID of the enchantment. I've only seen created types, no default or array types.
-    ref_id: RefIdType,
+    pub ref_id: RefIdType,
     /// Seems to represent the number of times the enchantment is used?
     /// However, sometimes using the same enchantment nets two different forms.
     /// Could just be a bug in Skyrim.
-    times_used: u32,
-    effects: Vec<MagicEffect>,
+    pub times_used: u32,
+    pub effects: Vec<MagicEffect>,
 }
 
 fn read_enchantments(r: &mut SaveFileReader, count: u32) -> Vec<Enchantment> {
@@ -320,10 +320,10 @@ fn read_enchantments(r: &mut SaveFileReader, count: u32) -> Vec<Enchantment> {
 
 #[derive(Clone, Debug)]
 pub struct MagicEffect {
-    effect_id: RefIdType,
-    info: EnchInfo,
+    pub effect_id: RefIdType,
+    pub info: EnchInfo,
     /// Amount this enchantment adds to the base item's price.
-    price: f32,
+    pub price: f32,
 }
 
 fn read_magic_effects(r: &mut SaveFileReader, count: u32) -> Vec<MagicEffect> {
@@ -344,16 +344,16 @@ fn read_magic_effects(r: &mut SaveFileReader, count: u32) -> Vec<MagicEffect> {
 
 #[derive(Clone, Debug)]
 pub struct EnchInfo {
-    magnitude: f32,
-    duration: u32,
-    area: u32,
+    pub magnitude: f32,
+    pub duration: u32,
+    pub area: u32,
 }
 
 #[derive(Clone, Debug)]
 pub struct Effects {
-    image_space_modifiers: Vec<Effect>,
-    unknown1: f32,
-    unknown2: f32,
+    pub image_space_modifiers: Vec<Effect>,
+    pub unknown1: f32,
+    pub unknown2: f32,
 }
 
 fn read_effects(r: &mut SaveFileReader) -> Effects {
@@ -379,42 +379,42 @@ fn read_effects(r: &mut SaveFileReader) -> Effects {
 #[derive(Clone, Debug)]
 pub struct Effect {
     /// Value from 0 to 1 (0 is no effect, 1 is full effect)
-    strength: f32,
+    pub strength: f32,
     /// Time from effect beginning
-    timestamp: f32,
+    pub timestamp: f32,
     /// May be flag. Appears when you аdd a crossfade imagespace modifier to the active list with imodcf command
-    unknown: u32,
-    effect_id: RefIdType,
+    pub unknown: u32,
+    pub effect_id: RefIdType,
 }
 
 #[derive(Clone, Debug)]
 pub struct Weather {
-    climate: RefIdType,
-    weather: RefIdType,
+    pub climate: RefIdType,
+    pub weather: RefIdType,
     /// Only during weather transition. In other cases it equals zero.
-    prev_weather: RefIdType,
-    unk_weather_1: RefIdType,
-    unk_weather_2: RefIdType,
-    regn_weather: RefIdType,
+    pub prev_weather: RefIdType,
+    pub unk_weather_1: RefIdType,
+    pub unk_weather_2: RefIdType,
+    pub regn_weather: RefIdType,
     /// Current in-game time in hours
-    cur_time: f32,
+    pub cur_time: f32,
     /// Time of current weather beginning
-    beg_time: f32,
+    pub beg_time: f32,
     /// A value from 0.0 to 1.0 describing how far in the current weather has transitioned
-    weather_pct: f32,
-    u1: u32,
-    u2: u32,
-    u3: u32,
-    u4: u32,
-    u5: u32,
-    u6: u32,
-    u7: f32,
-    u8: u32,
-    flags: u8,
+    pub weather_pct: f32,
+    pub u1: u32,
+    pub u2: u32,
+    pub u3: u32,
+    pub u4: u32,
+    pub u5: u32,
+    pub u6: u32,
+    pub u7: f32,
+    pub u8: u32,
+    pub flags: u8,
     /// Unresearched format. Only present if flags has bit 0 set.
-    u9: Option<String>,
+    pub u9: Option<String>,
     /// Unresearched format. Only present if flags has bit 1 set.
-    u10: Option<String>,
+    pub u10: Option<String>,
 }
 
 fn read_weather(r: &mut SaveFileReader) -> Weather {
@@ -471,11 +471,11 @@ fn read_weather(r: &mut SaveFileReader) -> Weather {
 #[derive(Clone, Debug)]
 pub struct Audio {
     /// Only the UIActivateFail sound descriptor has been observed here.
-    unknown: RefIdType,
+    pub unknown: RefIdType,
     /// Seems to contain music tracks (MUST records) that were playing at the time of saving, not including the background music
-    tracks: Vec<RefIdType>,
+    pub tracks: Vec<RefIdType>,
     /// Background music at time of saving
-    bgm: RefIdType,
+    pub bgm: RefIdType,
 }
 
 pub fn read_audio(r: &mut SaveFileReader) -> Audio {
@@ -492,8 +492,8 @@ pub fn read_audio(r: &mut SaveFileReader) -> Audio {
 
 #[derive(Clone, Debug)]
 pub struct SkyCellUnknown0 {
-    u1: RefIdType,
-    u2: RefIdType,
+    pub u1: RefIdType,
+    pub u2: RefIdType,
 }
 
 fn read_sky_cells(r: &mut SaveFileReader) -> Vec<SkyCellUnknown0> {
@@ -506,13 +506,13 @@ fn read_sky_cells(r: &mut SaveFileReader) -> Vec<SkyCellUnknown0> {
 
 #[derive(Clone, Debug)]
 pub struct ProcessLists {
-    u1: f32,
-    u2: f32,
-    u3: f32,
+    pub u1: f32,
+    pub u2: f32,
+    pub u3: f32,
     /// This value is assigned to the next process
-    next_num: u32,
+    pub next_num: u32,
     /// Crimes grouped according with their type (see below)
-    all_crimes: Vec<Crime>,
+    pub all_crimes: Vec<Crime>,
 }
 
 fn read_process_lists(r: &mut SaveFileReader) -> ProcessLists {
@@ -535,32 +535,32 @@ fn read_process_lists(r: &mut SaveFileReader) -> ProcessLists {
 
 #[derive(Clone, Debug)]
 pub struct Crime {
-    witness_num: u32,
-    crime_type: CrimeType,
-    u1: u8,
+    pub witness_num: u32,
+    pub crime_type: CrimeType,
+    pub u1: u8,
     /// The number of stolen items (e.g. if you've stolen Gold(7), it would be equals to 7).
     ///Only for thefts
-    quantity: u32,
+    pub quantity: u32,
     /// Assigned in accordance with nextNum
-    serial_num: u32,
-    u2: u8,
+    pub serial_num: u32,
+    pub u2: u8,
     /// May be date of crime? Little byte is equal to day
-    u3: u32,
+    pub u3: u32,
     /// Negative value measured from moment of crime
-    elapsed_time: f32,
+    pub elapsed_time: f32,
     /// The killed, forced door, stolen item etc.
-    victim_id: RefIdType,
-    criminal_id: RefIdType,
+    pub victim_id: RefIdType,
+    pub criminal_id: RefIdType,
     /// Only for thefts
-    item_base_id: RefIdType,
+    pub item_base_id: RefIdType,
     /// Faction, outfit etc. Only for thefts
-    ownership_id: RefIdType,
-    witnesses: Vec<RefIdType>,
-    bounty: u32,
-    crime_faction_id: RefIdType,
+    pub ownership_id: RefIdType,
+    pub witnesses: Vec<RefIdType>,
+    pub bounty: u32,
+    pub crime_faction_id: RefIdType,
     /// 0 - active crime, 1 - it was atoned
-    is_cleared: bool,
-    u4: u16,
+    pub is_cleared: bool,
+    pub u4: u16,
 }
 
 fn read_crime(r: &mut SaveFileReader) -> Crime {
@@ -658,15 +658,15 @@ pub struct Interface {
     /// - 0x102 - HelpFavoritesPCShort
     ///
     ///etc.
-    shown_help_msg: Vec<u32>,
-    u0: u8,
-    last_used_weapons: Vec<RefIdType>,
-    last_used_spells: Vec<RefIdType>,
-    last_used_shouts: Vec<RefIdType>,
-    u1: u8,
+    pub shown_help_msg: Vec<u32>,
+    pub u0: u8,
+    pub last_used_weapons: Vec<RefIdType>,
+    pub last_used_spells: Vec<RefIdType>,
+    pub last_used_shouts: Vec<RefIdType>,
+    pub u1: u8,
     /// This value is only present in certain situations. Undetermined when.
     /// Library currently does not parse this => always None
-    u2: Option<InterfaceUnknown0>,
+    pub u2: Option<InterfaceUnknown0>,
 }
 
 fn read_interface(r: &mut SaveFileReader) -> Interface {
@@ -695,9 +695,9 @@ fn read_interface(r: &mut SaveFileReader) -> Interface {
 
 #[derive(Clone, Debug)]
 pub struct InterfaceUnknown0 {
-    unknown_0_0: Vec<InterfaceUnknown0_0>,
-    unknown1: Vec<String>,
-    unknown2: u32,
+    pub unknown_0_0: Vec<InterfaceUnknown0_0>,
+    pub unknown1: Vec<String>,
+    pub unknown2: u32,
 }
 
 
@@ -739,18 +739,18 @@ impl Parse for ActorCauses {
 
 #[derive(Clone, Debug)]
 pub struct ActorCausesUnknown0 {
-    x: f32,
-    y: f32,
-    z: f32,
-    serial_num: u32,
-    actor_id: RefIdType,
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub serial_num: u32,
+    pub actor_id: RefIdType,
 }
 
 #[derive(Clone, Debug)]
 pub struct DetectionManagerUnknown0 {
-    u0: RefIdType,
-    u1: u32,
-    u2: u32,
+    pub u0: RefIdType,
+    pub u1: u32,
+    pub u2: u32,
 }
 
 impl Parse for DetectionManagerUnknown0 {
@@ -770,8 +770,8 @@ impl Parse for DetectionManagerUnknown0 {
 
 #[derive(Clone, Debug)]
 pub struct LocationMetaDataUnknown0 {
-    u0: RefIdType,
-    u1: u32,
+    pub u0: RefIdType,
+    pub u1: u32,
 }
 
 impl Parse for LocationMetaDataUnknown0 {
@@ -790,13 +790,13 @@ impl Parse for LocationMetaDataUnknown0 {
 
 #[derive(Clone, Debug)]
 pub struct QuestStaticData {
-    u0: Vec<QuestRunDataItem3>,
-    u1: Vec<QuestRunDataItem3>,
-    u2: Vec<RefIdType>,
-    u3: Vec<RefIdType>,
-    u4: Vec<RefIdType>,
-    u5: Vec<QuestStaticDataUnknown0>,
-    u6: u8,
+    pub u0: Vec<QuestRunDataItem3>,
+    pub u1: Vec<QuestRunDataItem3>,
+    pub u2: Vec<RefIdType>,
+    pub u3: Vec<RefIdType>,
+    pub u4: Vec<RefIdType>,
+    pub u5: Vec<QuestStaticDataUnknown0>,
+    pub u6: u8,
 }
 
 impl Parse for QuestStaticData {
@@ -829,9 +829,9 @@ impl Parse for QuestStaticData {
 
 #[derive(Clone, Debug)]
 pub struct QuestRunDataItem3 {
-    u1: u32,
-    u2: f32,
-    quest_run_data_item_3_data: Vec<QuestRunDataItem3DataType>,
+    pub u1: u32,
+    pub u2: f32,
+    pub quest_run_data_item_3_data: Vec<QuestRunDataItem3DataType>,
 }
 
 fn read_quest_run_data_item_3(r: &mut SaveFileReader) -> QuestRunDataItem3 {
@@ -867,8 +867,8 @@ fn read_quest_run_data_item_3_data_type(r: &mut SaveFileReader) -> QuestRunDataI
 
 #[derive(Clone, Debug)]
 pub struct QuestStaticDataUnknown0 {
-    unk0_0: RefIdType,
-    u1: Vec<QuestStaticDataUnknown1>,
+    pub unk0_0: RefIdType,
+    pub u1: Vec<QuestStaticDataUnknown1>,
 }
 
 fn read_quest_static_data_unknown_0(r: &mut SaveFileReader) -> QuestStaticDataUnknown0 {
@@ -886,16 +886,16 @@ fn read_quest_static_data_unknown_0(r: &mut SaveFileReader) -> QuestStaticDataUn
 
 #[derive(Clone, Debug)]
 pub struct QuestStaticDataUnknown1 {
-    unk_1_0: u32,
-    unk_1_1: u32,
+    pub unk_1_0: u32,
+    pub unk_1_1: u32,
 }
 
 #[derive(Clone, Debug)]
 pub struct MagicFavorites {
     /// Spells, shouts, abilities etc.
-    favorited_magics: Vec<RefIdType>,
+    pub favorited_magics: Vec<RefIdType>,
     /// Hotkey corresponds to the position of magic in this array
-    magic_hot_keys: Vec<RefIdType>,
+    pub magic_hot_keys: Vec<RefIdType>,
 }
 
 impl Parse for MagicFavorites {
@@ -913,10 +913,10 @@ impl Parse for MagicFavorites {
 
 #[derive(Clone, Debug)]
 pub struct StoryEventManager {
-    u0: u32,
+    pub u0: u32,
     /// Unknown format. Possibly the same as unk0 and unk1 in Quest Static Data
     /// Vector represents there is a list. Currently just capacity adjusted.
-    u1: Vec<u8>,
+    pub u1: Vec<u8>,
 }
 
 impl Parse for StoryEventManager {
@@ -936,8 +936,8 @@ impl Parse for StoryEventManager {
 
 #[derive(Clone, Debug)]
 pub struct IngredientsCombined {
-    ingredient0: RefIdType,
-    ingredient1: RefIdType,
+    pub ingredient0: RefIdType,
+    pub ingredient1: RefIdType,
 }
 
 impl Parse for IngredientsCombined {
@@ -957,11 +957,11 @@ impl Parse for IngredientsCombined {
 #[derive(Clone, Debug)]
 pub struct AnimObject {
     /// RefID pointing to an actor reference.
-    achr: RefIdType,
+    pub achr: RefIdType,
     /// RefID pointing to an animation form.
-    anim: RefIdType,
+    pub anim: RefIdType,
     /// Unknown but only 0 and 1 have been observed.
-    u1: u8,
+    pub u1: u8,
 }
 
 impl Parse for AnimObject {

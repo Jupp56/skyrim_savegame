@@ -13,7 +13,7 @@ fn main() {
     let parsed_file = parse_save_file(buf);
     //dbg!(parsed_file);
     dbg!(parsed_file.global_data_table_1.into_iter().filter(|x| {
-        if let GlobalDataType::PlayerLocation(y) = x {
+        if let GlobalDataType::TES(y) = x {
             return true
         }
         false
