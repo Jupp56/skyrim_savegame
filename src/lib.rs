@@ -3,7 +3,7 @@ use std::fmt;
 
 pub mod global_data;
 
-use global_data::*;
+pub use global_data::*;
 
 pub mod fundamental_types;
 
@@ -11,11 +11,11 @@ pub use fundamental_types::*;
 
 pub mod change_form;
 
-use change_form::*;
+pub use change_form::*;
 
 pub mod reader;
 
-use reader::*;
+pub use reader::*;
 
 pub mod header;
 use header::*;
