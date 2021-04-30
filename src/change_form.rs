@@ -3,13 +3,13 @@ use flate2::read::ZlibDecoder;
 use std::io::Read;
 use std::fmt;
 use std::convert::TryInto;
-use crate::RefIdType;
+use crate::FormIdType;
 
 const CHANGE_FORM_DECODE_ERROR: &str = "Failed to decode compressed change form!";
 
 #[derive(Clone)]
 pub struct ChangeForm {
-    pub form_id: RefIdType,
+    pub form_id: FormIdType,
     pub change_flags: u32,
     pub data_type: u8,
     pub version: u8,

@@ -29,23 +29,23 @@ impl RefId {
     /// The type of form id is determined by the first two bits of the first bytes.
     /// This function returns the respective type containing the value, already parsed.
     /// formIDArray indexes have already 1 subtracted to be used directly.
-    pub fn get_form_id(&self) -> RefIdType {
+    pub fn get_form_id(&self) -> FormIdType {
         match &self.byte0 & 0b11000000 {
             0 => {
                 let parsed_id = self.get_parsed_id();
                 if parsed_id == 0 {
-                    RefIdType::Default(0)
+                    FormIdType::Default(0)
                 } else {
-                    RefIdType::Index(parsed_id - 1)
+                    FormIdType::Index(parsed_id - 1)
                 }
             },
             64 => {
-                RefIdType::Default(self.get_parsed_id())
+                FormIdType::Default(self.get_parsed_id())
             },
             128 => {
-                RefIdType::Created(self.get_parsed_id())
+                FormIdType::Created(self.get_parsed_id())
             },
-            _ => RefIdType::Unknown(self.get_parsed_id())
+            _ => FormIdType::Unknown(self.get_parsed_id())
         }
     }
 
@@ -56,7 +56,7 @@ impl RefId {
 
 /// The different types of formId that can be stored in a RefID.
 #[derive(Clone, Copy, Debug)]
-pub enum RefIdType {
+pub enum FormIdType {
     /// An index into the File.formIDArray.
     /// If the index value of 0 is given, the formID is 0x00000000, else, index into the array using value - 1.
     /// get_form_id() already takes care of subtracting 1!
