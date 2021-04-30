@@ -438,10 +438,10 @@ fn read_weather(r: &mut SaveFileReader) -> Weather {
     let flags = r.read_u8();
     let mut u9 = None;
     let mut u10 = None;
-    if flags & 0b10000000 == 128 {
+    if flags & 0b10000000 == 0b10000000 {
         u9 = Some("Unbekannter Datentyp".to_string())
     }
-    if flags & 0b01000000 == 64 {
+    if flags & 0b01000000 == 0b01000000 {
         u10 = Some("Unbekannter Datentyp".to_string())
     }
     Weather {
