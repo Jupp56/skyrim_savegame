@@ -50,7 +50,7 @@ impl RefId {
     }
 
     pub fn get_parsed_id(&self) -> u32 {
-        (self.byte0 as u32) & 0b00111111 << 16 ^ (self.byte1 as u32) << 8 ^ (self.byte1 as u32)
+        ((self.byte0 as u32) & 0b00111111) << 16 ^ (self.byte1 as u32) << 8 ^ (self.byte2 as u32)
     }
 }
 
