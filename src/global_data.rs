@@ -5,7 +5,7 @@ use crate::fundamental_types::*;
 use std::convert::TryInto;
 use anyhow::Error;
 use crate::reader::{read_ref_id, read_vsval_to_u32, read_ref_ids_into_vec, read_into_vec, read_u32s_into_vec};
-use std::fmt::{Debug, Formatter};
+use std::fmt::{Debug, Formatter, Display};
 
 trait Parse {
     fn parse(r: &mut SaveFileReader) -> GlobalDataType;
@@ -132,6 +132,12 @@ pub enum MiscStatCategory {
     DLCStats,
     /// previously unobserved values, corrupted file
     Error,
+}
+
+impl Display for MiscStatCategory {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Debug::fmt(&self,f)
+    }
 }
 
 impl Parse for MiscStats {
